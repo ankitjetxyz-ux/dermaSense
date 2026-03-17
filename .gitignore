@@ -1,0 +1,5 @@
+# Frontend should live under dermaSense/gradient-bloom-desk.
+# This root-level folder can be left behind temporarily on Windows
+# if node_modules contains locked native binaries.
+/gradient-bloom-desk/
+
