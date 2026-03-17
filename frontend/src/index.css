@@ -1,0 +1,131 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800;900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Dark purple theme – white fonts */
+    --background: 270 45% 10%;
+    --foreground: 0 0% 100%;
+
+    --card: 270 40% 14%;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 270 40% 14%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 270 65% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 270 35% 20%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 270 35% 18%;
+    --muted-foreground: 270 15% 75%;
+
+    --accent: 270 50% 22%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 270 30% 24%;
+    --input: 270 30% 24%;
+    --ring: 270 65% 55%;
+
+    --radius: 0.75rem;
+
+    --gradient-primary: linear-gradient(135deg, hsl(270 65% 50%), hsl(280 60% 45%));
+    /* Dark purple gradient for buttons/surfaces */
+    --gradient-text-dark: linear-gradient(
+      135deg,
+      hsl(270 55% 35%) 0%,
+      hsl(280 50% 40%) 50%,
+      hsl(260 55% 38%) 100%
+    );
+    /* Dark purple page background */
+    --gradient-hero: radial-gradient(1200px 600px at 10% 0%, hsl(270 50% 18%) 0%, transparent 55%),
+      radial-gradient(1000px 500px at 90% 10%, hsl(280 45% 16%) 0%, transparent 50%),
+      linear-gradient(180deg, hsl(270 45% 10%) 0%, hsl(270 42% 12%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(270 40% 18%), hsl(270 35% 22%));
+
+    --shadow-card: 0 10px 28px -18px hsl(0 0% 0% / 0.35);
+    --shadow-elevated: 0 18px 50px -22px hsl(0 0% 0% / 0.4);
+
+    --font-display: "Outfit", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    --font-body: "Inter", sans-serif;
+
+    --sidebar-background: 270 40% 12%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 270 65% 55%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 270 35% 20%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 270 30% 24%;
+    --sidebar-ring: 270 65% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+    font-weight: 500;
+    background-image: var(--gradient-hero);
+    background-attachment: fixed;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 900;
+  }
+  h1 { font-size: 3rem; line-height: 1.15; }
+  h2 { font-size: 2.25rem; line-height: 1.2; }
+  h3 { font-size: 1.875rem; line-height: 1.25; }
+  h4 { font-size: 1.5rem; line-height: 1.3; }
+  h5 { font-size: 1.25rem; line-height: 1.35; }
+  h6 { font-size: 1.125rem; line-height: 1.4; }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-card border border-border rounded-xl;
+    box-shadow: var(--shadow-card);
+  }
+
+  .glass-nav {
+    @apply bg-card border-b border-border;
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, hsl(0 0% 100%), hsl(270 30% 88%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-bg {
+    background-color: hsl(var(--background));
+    background-image: var(--gradient-hero);
+  }
+
+  .btn-gradient {
+    background: var(--gradient-text-dark);
+    @apply text-white font-semibold rounded-md px-6 py-3 transition-transform hover:scale-[1.01] active:scale-[0.99];
+    box-shadow: var(--shadow-elevated);
+  }
+
+  .btn-gradient:hover {
+    filter: brightness(1.12);
+  }
+
+  .btn-outline {
+    @apply rounded-md border border-white/30 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/15;
+  }
+}
