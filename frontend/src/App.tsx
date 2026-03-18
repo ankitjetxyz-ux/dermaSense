@@ -1,32 +1,26 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { Toaster } from "@/components/ui/toaster";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import Index from "./pages/Index.tsx";
-import Routine from "./pages/Routine.tsx";
-import Products from "./pages/Products.tsx";
-import Profile from "./pages/Profile.tsx";
-import NotFound from "./pages/NotFound.tsx";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Index from './pages/Index.tsx'
+import Products from './pages/Products.tsx'
+import Routine from './pages/Routine.tsx'
+import Auth from './pages/Auth.tsx'
+import Profile from './pages/Profile.tsx'
+import ProductDetails from './pages/ProductDetails.tsx'
+import SkinAnalysis from './pages/SkinAnalysis.tsx'
 
-const queryClient = new QueryClient();
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/"               element={<Index />} />
+        <Route path="/products"       element={<Products />} />
+        <Route path="/routine"        element={<Routine />} />
+        <Route path="/auth"           element={<Auth />} />
+        <Route path="/profile"        element={<Profile />} />
+        <Route path="/product/:id"    element={<ProductDetails />} />
+        <Route path="/skin-analysis"  element={<SkinAnalysis />} />
+      </Routes>
+    </Router>
+  )
+}
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/routine" element={<Routine />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
-
-export default App;
+export default App

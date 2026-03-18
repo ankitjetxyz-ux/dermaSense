@@ -1,63 +1,183 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { api } from "@/lib/api";
+import { Check } from "lucide-react";
+
+const skinTypeOptions = [
+  { value: "Dry",         desc: "Tight, flaky or rough texture" },
+  { value: "Oily",        desc: "Shiny, enlarged pores" },
+  { value: "Combination", desc: "Oily T-zone, dry cheeks" },
+  { value: "Normal",      desc: "Balanced with minimal issues" },
+  { value: "Sensitive",   desc: "Reactive, prone to redness" },
+];
+
+const concernOptions = [
+  { value: "Hydration",     emoji: "💧" },
+  { value: "Glow",          emoji: "✨" },
+  { value: "Acne",          emoji: "🌿" },
+  { value: "Anti-Aging",    emoji: "🕰️" },
+  { value: "Hyperpigmentation", emoji: "🔆" },
+  { value: "Sensitivity",   emoji: "🤍" },
+];
+
+const STEPS  = ["skin_type", "concern", "confirm"] as const;
+type Step    = typeof STEPS[number];
 
 const Routine = () => {
+  const [step, setStep]         = useState<Step>("skin_type");
+  const [skinType, setSkinType] = useState("");
+  const [concern, setConcern]   = useState("");
+  const [loading, setLoading]   = useState(false);
+  const navigate = useNavigate();
+
+  const progress = { skin_type: 33, concern: 66, confirm: 100 }[step];
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    try {
+      await api.post("/skin-profiles", { skinType, concern, userId: 1 });
+    } catch (err) {
+      console.error(err);
+    }
+    setLoading(false);
+    navigate("/profile");
+  };
+
   return (
-    <div className="gradient-bg flex min-h-screen flex-col">
+    <div className="min-h-screen bg-background flex flex-col">
       <Navbar />
-      <main className="container mx-auto flex-1 px-6 py-10 animate-fade-in">
-        <div className="flex flex-col gap-2">
-          <h1 className="gradient-text text-4xl md:text-5xl font-black tracking-tight">
-            Skin Routine Finder
-          </h1>
-          <p className="text-sm md:text-base text-muted-foreground">
-            Answer a quick cosmetic + skincare quiz to get routine and product matches.
-          </p>
-        </div>
 
-        <div className="mt-8">
-          <div>
-            <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-              <div className="flex items-center justify-between">
-                <div className="text-xs font-bold tracking-widest text-muted-foreground">
-                  QUIZ (UI DEMO)
-                </div>
-                <div className="text-xs text-muted-foreground">Step 1 / 15</div>
-              </div>
+      <main className="flex-1 py-16 md:py-28 animate-fade-in">
+        <div className="container mx-auto px-6">
+          <div className="max-w-xl mx-auto">
 
-              <div className="mt-4 h-2 overflow-hidden rounded-full bg-muted">
-                <div className="h-full w-1/4" style={{ background: "var(--gradient-primary)" }} />
-              </div>
+            {/* Header */}
+            <div className="text-center mb-12">
+              <span className="font-body text-[10px] uppercase tracking-[0.3em] text-accent font-medium block mb-4">Personalised Diagnostics</span>
+              <h1 className="font-display text-5xl md:text-6xl italic text-foreground mb-2">Routine Finder</h1>
+              <p className="font-body text-sm text-muted-foreground">Tell us about your skin so we can build your perfect routine.</p>
+            </div>
 
-              <div className="mt-6 text-xl md:text-2xl font-black text-foreground">
-                What describes your main goal right now?
-              </div>
+            {/* Progress bar */}
+            <div className="h-0.5 bg-border/60 mb-10 overflow-hidden">
+              <div
+                className="h-full bg-primary transition-all duration-500"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
 
-              <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                {["Hydration", "Glow", "Acne care", "Oil control"].map((opt) => (
+            {/* Step: Skin Type */}
+            {step === "skin_type" && (
+              <div className="space-y-4">
+                <p className="font-body text-xs uppercase tracking-widest text-muted-foreground mb-6">Step 1 of 2 — What is your skin type?</p>
+                {skinTypeOptions.map(({ value, desc }) => (
                   <button
-                    key={opt}
-                    type="button"
-                    className="rounded-xl border border-border bg-card px-4 py-4 text-left font-semibold text-white transition hover:bg-white/10"
+                    key={value}
+                    onClick={() => setSkinType(value)}
+                    className={`w-full flex items-center justify-between border px-6 py-4 text-left transition-all ${
+                      skinType === value
+                        ? "bg-rose-light border-primary text-foreground"
+                        : "border-border/60 hover:border-primary/50 hover:bg-rose-light/30 text-foreground"
+                    }`}
                   >
-                    {opt}
+                    <div>
+                      <p className="font-body text-sm font-medium">{value}</p>
+                      <p className="font-body text-[10px] text-muted-foreground">{desc}</p>
+                    </div>
+                    {skinType === value && <Check className="h-4 w-4 text-primary shrink-0" />}
                   </button>
                 ))}
+                <div className="flex justify-end pt-4">
+                  <button
+                    disabled={!skinType}
+                    onClick={() => setStep("concern")}
+                    className="bg-primary text-primary-foreground px-10 py-3 font-body text-[11px] uppercase tracking-widest disabled:opacity-40 hover:bg-primary/90 transition-all"
+                  >
+                    Next →
+                  </button>
+                </div>
               </div>
+            )}
 
-              <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-end">
-                <Link to="/products" className="btn-outline">
-                  Skip to products
-                </Link>
-                <button type="button" className="btn-gradient px-6 py-3 text-sm">
-                  Next →
-                </button>
+            {/* Step: Concern */}
+            {step === "concern" && (
+              <div>
+                <p className="font-body text-xs uppercase tracking-widest text-muted-foreground mb-6">Step 2 of 2 — What is your primary concern?</p>
+                <div className="grid grid-cols-2 gap-3 mb-8">
+                  {concernOptions.map(({ value, emoji }) => (
+                    <button
+                      key={value}
+                      onClick={() => setConcern(value)}
+                      className={`flex items-center gap-3 border px-5 py-4 transition-all ${
+                        concern === value
+                          ? "bg-rose-light border-primary"
+                          : "border-border/60 hover:border-primary/50 hover:bg-rose-light/30"
+                      }`}
+                    >
+                      <span className="text-xl">{emoji}</span>
+                      <div className="text-left">
+                        <p className="font-body text-sm font-medium text-foreground">{value}</p>
+                      </div>
+                      {concern === value && <Check className="h-4 w-4 text-primary ml-auto shrink-0" />}
+                    </button>
+                  ))}
+                </div>
+                <div className="flex items-center justify-between pt-2">
+                  <button onClick={() => setStep("skin_type")} className="font-body text-[11px] uppercase tracking-widest text-muted-foreground hover:text-foreground underline underline-offset-4 transition-colors">
+                    ← Back
+                  </button>
+                  <button
+                    disabled={!concern}
+                    onClick={() => setStep("confirm")}
+                    className="bg-primary text-primary-foreground px-10 py-3 font-body text-[11px] uppercase tracking-widest disabled:opacity-40 hover:bg-primary/90 transition-all"
+                  >
+                    Next →
+                  </button>
+                </div>
               </div>
+            )}
+
+            {/* Step: Confirm */}
+            {step === "confirm" && (
+              <div className="border border-border/60 p-10 bg-card text-center space-y-6">
+                <p className="font-body text-xs uppercase tracking-widest text-muted-foreground">Your Skin Profile</p>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-rose-light/50 p-5">
+                    <p className="font-body text-[10px] uppercase tracking-widest text-muted-foreground mb-2">Skin Type</p>
+                    <p className="font-display text-2xl italic text-foreground">{skinType}</p>
+                  </div>
+                  <div className="bg-sage-light/50 p-5">
+                    <p className="font-body text-[10px] uppercase tracking-widest text-muted-foreground mb-2">Main Concern</p>
+                    <p className="font-display text-2xl italic text-foreground">{concern}</p>
+                  </div>
+                </div>
+                <p className="font-body text-sm text-muted-foreground">We'll save this to build your personalised routine recommendations.</p>
+                <div className="flex flex-col sm:flex-row gap-4 pt-2 justify-center">
+                  <button onClick={() => setStep("skin_type")} className="font-body text-[11px] uppercase tracking-widest text-muted-foreground hover:text-foreground underline underline-offset-4 transition-colors">
+                    Start over
+                  </button>
+                  <button
+                    onClick={handleSubmit}
+                    disabled={loading}
+                    className="bg-primary text-primary-foreground px-12 py-4 font-body text-[11px] uppercase tracking-widest disabled:opacity-60 hover:bg-primary/90 transition-all"
+                  >
+                    {loading ? "Saving..." : "Save My Routine"}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <div className="mt-10 text-center">
+              <Link to="/products" className="font-body text-[10px] uppercase tracking-widest text-muted-foreground hover:text-foreground underline underline-offset-4 transition-colors">
+                Skip — Browse all products
+              </Link>
             </div>
           </div>
         </div>
       </main>
+
       <Footer />
     </div>
   );
