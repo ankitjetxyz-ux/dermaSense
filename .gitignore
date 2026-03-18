@@ -1,10 +1,4 @@
-<<<<<<< HEAD
-# Frontend should live under dermaSense/gradient-bloom-desk.
-# This root-level folder can be left behind temporarily on Windows
-# if node_modules contains locked native binaries.
-/gradient-bloom-desk/
-
-=======
+### Maven / Java ###
 HELP.md
 target/
 .mvn/wrapper/maven-wrapper.jar
@@ -43,4 +37,6 @@ build/
 .env
 .env.*
 !.env.example
->>>>>>> 114d78301d2c2e255603cf9af9fac366f75cae03
+
+### Old frontend leftovers (do not use) ###
+/gradient-bloom-desk/
