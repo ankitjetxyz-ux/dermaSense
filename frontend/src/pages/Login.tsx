@@ -38,8 +38,8 @@ const Login = () => {
       <main className="flex-1 flex items-center justify-center px-6 py-20">
         <div className="w-full max-w-md animate-fade-in">
 
-          <div className="border border-border/50 bg-card p-10 md:p-14 shadow-sm">
-            <div className="w-14 h-14 bg-rose-light flex items-center justify-center mb-8 mx-auto">
+          <div className="ds-card p-10 md:p-14">
+            <div className="w-14 h-14 bg-rose-light rounded-2xl flex items-center justify-center mb-8 mx-auto">
               <Sparkles className="h-6 w-6 text-primary" />
             </div>
 
@@ -76,7 +76,7 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={loading || !email}
-                className="w-full bg-primary text-primary-foreground py-4 font-body text-[11px] uppercase tracking-[0.2em] disabled:opacity-60 hover:bg-primary/90 transition-all"
+                className="w-full bg-primary rounded-xl text-primary-foreground py-4 font-body text-[11px] uppercase tracking-[0.2em] disabled:opacity-60 hover:bg-primary/90 transition-all"
               >
                 {loading ? "Signing in..." : "Sign In"}
               </button>

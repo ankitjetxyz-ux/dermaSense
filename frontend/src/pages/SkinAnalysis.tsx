@@ -10,34 +10,153 @@ import { generateGeminiAnalysis, GeminiAnalysis } from "@/lib/gemini";
 // ─── Questionnaire definition ────────────────────────────────────
 const QUESTIONS = [
   {
-    id: "endOfDayFeel",
-    question: "How does your skin feel by the END of the day? (not after washing)",
+    id: "feelAfterWash",
+    question: "1) How does your skin feel 30 minutes after washing it with a gentle cleanser?",
     options: [
-      { label: "Tight / dry", value: "feels tight or dry by day end" },
-      { label: "Oily / greasy", value: "feels oily or greasy by day end" },
-      { label: "Normal", value: "stays comfortable and balanced" },
-      { label: "Mix (oily T-zone, dry cheeks)", value: "oily T-zone but cheeks stay dry" },
+      { label: "A) Tight and uncomfortable", value: "Tight and uncomfortable" },
+      { label: "B) Soft and balanced", value: "Soft and balanced" },
+      { label: "C) Shiny in the T-zone but tight on the cheeks", value: "Shiny in the T-zone but tight on the cheeks" },
+      { label: "D) Slick and greasy all over", value: "Slick and greasy all over" },
     ],
   },
   {
-    id: "biggestIssue",
-    question: "What’s your biggest recurring issue? (be honest)",
+    id: "poresVisibility",
+    question: "2) Look in the mirror under bright light. How visible are your pores?",
     options: [
-      { label: "Acne / pimples", value: "acne or frequent pimples" },
-      { label: "Dark spots / pigmentation", value: "dark spots or pigmentation" },
-      { label: "Dullness", value: "skin looks dull" },
-      { label: "Texture (bumps, uneven)", value: "uneven texture or bumps" },
-      { label: "Sensitivity (redness, burning)", value: "sensitive with redness or burning" },
+      { label: "A) Almost invisible", value: "Almost invisible" },
+      { label: "B) Visible but not large", value: "Visible but not large" },
+      { label: "C) Enlarged only on the nose and forehead", value: "Enlarged only on the nose and forehead" },
+      { label: "D) Large and visible across the entire face", value: "Large and visible across the entire face" },
     ],
   },
   {
-    id: "productReaction",
-    question: "How does your skin react to new products?",
+    id: "blotFrequency",
+    question: "3) How often do you feel the need to blot your face or apply powder during the day?",
     options: [
-      { label: "No reaction (chill skin)", value: "handles new products fine" },
-      { label: "Slight breakouts sometimes", value: "sometimes slight breakouts" },
-      { label: "Frequent breakouts", value: "often breaks out" },
-      { label: "Irritation / redness / burning", value: "irritation, redness or burning" },
+      { label: "A) Never; my skin rarely looks shiny", value: "Never; my skin rarely looks shiny" },
+      { label: "B) Maybe once in the late afternoon", value: "Maybe once in the late afternoon" },
+      { label: "C) Usually just on my nose or forehead by midday", value: "Usually just on my nose or forehead by midday" },
+      { label: "D) Multiple times a day; my face feels greasy within two hours", value: "Multiple times a day; my face feels greasy within two hours" },
+    ],
+  },
+  {
+    id: "textureFeel",
+    question: "4) Describe the texture of your skin when you run your fingers over it.",
+    options: [
+      { label: "A) Rough, flaky, or papery", value: "Rough, flaky, or papery" },
+      { label: "B) Smooth and firm", value: "Smooth and firm" },
+      { label: "C) Smooth in some areas, but bumpy or oily in others", value: "Smooth in some areas, but bumpy or oily in others" },
+      { label: "D) Thick and oily, sometimes with a 'clogged' feel", value: "Thick and oily, sometimes with a 'clogged' feel" },
+    ],
+  },
+  {
+    id: "moisturizerReaction",
+    question: "5) How does your skin react to moisturizer?",
+    options: [
+      { label: "A) It drinks it up instantly and often stays thirsty", value: "It drinks it up instantly and often stays thirsty" },
+      { label: "B) It feels comfortable and hydrated", value: "It feels comfortable and hydrated" },
+      { label: "C) It feels good on my cheeks but can feel too heavy on my T-zone", value: "It feels good on my cheeks but can feel too heavy on my T-zone" },
+      { label: "D) It often feels weighed down or even more greasy", value: "It often feels weighed down or even more greasy" },
+    ],
+  },
+  {
+    id: "productSensitivity",
+    question: "6) How frequently does your skin turn red or feel itchy after using a new product?",
+    options: [
+      { label: "A) Almost every time", value: "Almost every time" },
+      { label: "B) Rarely or only with very harsh products", value: "Rarely or only with very harsh products" },
+      { label: "C) Only in specific spots", value: "Only in specific spots" },
+      { label: "D) Never; my skin is quite resilient", value: "Never; my skin is quite resilient" },
+    ],
+  },
+  {
+    id: "environmentReaction",
+    question: "7) Does your skin react (stinging or flushing) to environmental factors like wind, sun, or spicy food?",
+    options: [
+      { label: "A) Yes, very easily", value: "Yes, very easily" },
+      { label: "B) Occasionally", value: "Occasionally" },
+      { label: "C) Usually only to extreme heat", value: "Usually only to extreme heat" },
+      { label: "D) Not really", value: "Not really" },
+    ],
+  },
+  {
+    id: "breakoutFrequency",
+    question: "8) How often do you experience breakouts (pimples or whiteheads)?",
+    options: [
+      { label: "A) Rarely", value: "Rarely" },
+      { label: "B) Occasionally (e.g., once a month)", value: "Occasionally (e.g., once a month)" },
+      { label: "C) Frequently, mostly in the T-zone", value: "Frequently, mostly in the T-zone" },
+      { label: "D) Constantly, all over the face", value: "Constantly, all over the face" },
+    ],
+  },
+  {
+    id: "darkSpots",
+    question: "9) Do you notice dark spots or 'shadows' left behind after a blemish heals?",
+    options: [
+      { label: "A) No", value: "No" },
+      { label: "B) Sometimes, but they fade quickly", value: "Sometimes, but they fade quickly" },
+      { label: "C) Yes, they take months to disappear", value: "Yes, they take months to disappear" },
+      { label: "D) They are a primary concern", value: "They are a primary concern" },
+    ],
+  },
+  {
+    id: "fineLines",
+    question: "10) Do you see fine lines even when your face is at rest?",
+    options: [
+      { label: "A) Yes, especially around the eyes and mouth", value: "Yes, especially around the eyes and mouth" },
+      { label: "B) Only when I smile or squint", value: "Only when I smile or squint" },
+      { label: "C) Not yet", value: "Not yet" },
+      { label: "D) Not a current concern", value: "Not a current concern" },
+    ],
+  },
+  {
+    id: "pinchTest",
+    question: "11) When you pinch a small area of your cheek, does the skin...",
+    options: [
+      { label: "A) Form tiny crinkle lines (sign of dehydration)", value: "Form tiny crinkle lines" },
+      { label: "B) Bounce back immediately", value: "Bounce back immediately" },
+      { label: "C) Feel squishy or oily", value: "Feel squishy or oily" },
+      { label: "D) Feels normal", value: "Feels normal" },
+    ],
+  },
+  {
+    id: "blackheads",
+    question: "12) Do you struggle with blackheads (open comedones) on your nose or chin?",
+    options: [
+      { label: "A) Never", value: "Never" },
+      { label: "B) A few, but they are manageable", value: "A few, but they are manageable" },
+      { label: "C) Yes, they are a primary concern", value: "Yes, they are a primary concern" },
+      { label: "D) They appear frequently all over", value: "They appear frequently all over" },
+    ],
+  },
+  {
+    id: "climate",
+    question: "13) How would you describe your current climate?",
+    options: [
+      { label: "A) Arid/Dry (leads to moisture loss)", value: "Arid/Dry (leads to moisture loss)" },
+      { label: "B) Humid (leads to increased oil/sweat)", value: "Humid (leads to increased oil/sweat)" },
+      { label: "C) Seasonal/Changing", value: "Seasonal/Changing" },
+      { label: "D) Temperate and mild", value: "Temperate and mild" },
+    ],
+  },
+  {
+    id: "morningEveningFeel",
+    question: "14) Does your skin feel significantly different when you wake up versus the evening?",
+    options: [
+      { label: "A) It feels driest in the morning", value: "It feels driest in the morning" },
+      { label: "B) It stays consistent", value: "It stays consistent" },
+      { label: "C) It’s fine in the morning but gets progressively oilier", value: "It’s fine in the morning but gets progressively oilier" },
+      { label: "D) Feels oilier by morning", value: "Feels oilier by morning" },
+    ],
+  },
+  {
+    id: "primaryGoal",
+    question: "15) What is your primary skin goal?",
+    options: [
+      { label: "A) Reducing redness and irritation", value: "Reducing redness and irritation" },
+      { label: "B) Clearing acne and congestion", value: "Clearing acne and congestion" },
+      { label: "C) Hydrating and smoothing fine lines", value: "Hydrating and smoothing fine lines" },
+      { label: "D) Evening out skin tone/pigmentation", value: "Evening out skin tone/pigmentation" },
     ],
   },
 ];
@@ -50,6 +169,12 @@ interface CustomQA {
   answer: string;
 }
 
+interface RoutineSections {
+  morning: string[];
+  evening: string[];
+  extra: string[];
+}
+
 // ─── Component ───────────────────────────────────────────────────
 const SkinAnalysis = () => {
   const [stepIndex, setStepIndex]       = useState(0);
@@ -60,41 +185,36 @@ const SkinAnalysis = () => {
   const [loading,   setLoading]         = useState(false);
   const [result,    setResult]          = useState<PredictionResult | null>(null);
   const [error,     setError]           = useState("");
-  const [testLoading, setTestLoading]   = useState(false);
-  const [testMessage, setTestMessage]   = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const baseSteps   = QUESTIONS.length;
-  const totalSteps  = baseSteps + 1; // last step = custom Q&A stage
-  const isCustomStep = stepIndex === baseSteps;
-  const currentQ    = isCustomStep ? null : QUESTIONS[stepIndex];
-  const progress    = Math.round((stepIndex / totalSteps) * 100);
-  const selectedAns = currentQ ? (answers[currentQ.id] ?? []) : [];
+  const baseSteps    = QUESTIONS.length;
   const MAX_QUESTIONS = 15;
-  const maxCustom = Math.max(0, MAX_QUESTIONS - QUESTIONS.length);
+  const maxCustom    = Math.max(0, MAX_QUESTIONS - QUESTIONS.length);
+  const hasCustomStep = maxCustom > 0;
+  const totalSteps   = baseSteps + (hasCustomStep ? 1 : 0);
+  const lastStepIndex = totalSteps - 1;
+  const isCustomStep = hasCustomStep && stepIndex === baseSteps;
+  const currentQ    = isCustomStep ? null : QUESTIONS[stepIndex];
+  const progress    = Math.round(((stepIndex + 1) / totalSteps) * 100);
+  const selectedAns = currentQ ? (answers[currentQ.id] ?? []) : [];
   const canAddCustom = customQAs.length < maxCustom && newQuestion.trim() && newAnswer.trim();
 
   const toggleAnswer = (value: string) => {
     if (!currentQ) return;
     setAnswers(prev => {
       const existing = prev[currentQ.id] ?? [];
-      const next = existing.includes(value)
-        ? existing.filter((item) => item !== value)
-        : [...existing, value];
+      const next = existing[0] === value ? [] : [value];
       return { ...prev, [currentQ.id]: next };
     });
   };
 
   const goNext = async () => {
     if (!isCustomStep && !selectedAns.length) return;
-
-    if (stepIndex < totalSteps) {
-      setStepIndex(i => i + 1);
+    if (stepIndex < lastStepIndex) {
+      setStepIndex(i => Math.min(i + 1, lastStepIndex));
+      return;
     }
-
-    if (stepIndex === totalSteps - 1) {
-      await submitAnswers();
-    }
+    await submitAnswers();
   };
 
   const goBack = () => setStepIndex(i => Math.max(0, i - 1));
@@ -124,28 +244,12 @@ const SkinAnalysis = () => {
 
       const raw = await generateGeminiAnalysis(payload);
       setResult(raw);
-    } catch (err) {
-      setError("We could not generate your analysis. Check your API key and try again.");
+    } catch (err: any) {
+      const message = err?.message ?? "We could not generate your analysis.";
+      setError(message);
       console.error(err);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const runTestPing = async () => {
-    setTestLoading(true);
-    setTestMessage(null);
-    try {
-      const sample = await generateGeminiAnalysis({
-        "How does your skin feel by the END of the day?": ["feels oily or greasy by day end"],
-        "What’s your biggest recurring issue?": ["acne or frequent pimples"],
-        "How does your skin react to new products?": ["handles new products fine"],
-      });
-      setTestMessage(`OK: ${sample.skinType} / ${sample.concern}`);
-    } catch (e: any) {
-      setTestMessage(`Error: ${e?.message ?? "Gemini unreachable"}`);
-    } finally {
-      setTestLoading(false);
     }
   };
 
@@ -177,6 +281,39 @@ const SkinAnalysis = () => {
     Sensitive:   "bg-purple-50 text-purple-700 border-purple-200",
   };
 
+  const splitRoutine = (routine: string): RoutineSections => {
+    const sections: RoutineSections = { morning: [], evening: [], extra: [] };
+    const lines = routine
+      .split(/\n+|;\s*/)
+      .map((line) => line.trim())
+      .filter(Boolean);
+
+    lines.forEach((line) => {
+      const lower = line.toLowerCase();
+      if (lower.startsWith("am:")) {
+        sections.morning.push(line.replace(/^am:\s*/i, ""));
+      } else if (lower.startsWith("pm:")) {
+        sections.evening.push(line.replace(/^pm:\s*/i, ""));
+      } else {
+        sections.extra.push(line);
+      }
+    });
+
+    if (!sections.morning.length && lines.length) {
+      sections.morning.push(lines[0]);
+    }
+    if (!sections.evening.length && lines.length > 1) {
+      sections.evening.push(lines[1]);
+    }
+    if (!sections.extra.length && lines.length > 2) {
+      sections.extra = lines.slice(2);
+    }
+
+    return sections;
+  };
+
+  const routineSections = result ? splitRoutine(result.routine) : null;
+
   // ─── Render ────────────────────────────────────────────────────
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -188,50 +325,34 @@ const SkinAnalysis = () => {
 
             {/* ── Header ── */}
             <div className="text-center mb-12 animate-fade-in">
-              <div className="inline-flex items-center gap-2 bg-rose-light/60 border border-border/40 px-4 py-2 mb-6">
+              <div className="inline-flex items-center gap-2 bg-rose-light/60 border border-border/40 rounded-full px-4 py-2 mb-6">
                 <Sparkles className="h-3.5 w-3.5 text-primary" />
-                <span className="font-body text-[10px] uppercase tracking-[0.25em] text-primary font-medium">Gemini Analysis</span>
+                <span className="font-body text-[10px] uppercase tracking-[0.25em] text-primary font-medium">Skin Assessment</span>
               </div>
               <h1 className="font-display text-5xl md:text-6xl text-foreground mb-4">
                 Skin Intelligence
               </h1>
               <p className="font-body text-sm text-muted-foreground max-w-sm mx-auto">
-                Answer 7 quick prompts, select all that apply, and Gemini will predict your skin type, priority concern, and a simple routine.
+                Complete the guided form to discover your skin type, likely concern, and a routine you can actually follow daily.
               </p>
-              <div className="mt-6 inline-flex items-center gap-3 border border-border/50 bg-card px-4 py-3 text-left">
-                <div>
-                  <p className="font-body text-[11px] uppercase tracking-widest text-muted-foreground">Check Gemini</p>
-                  <p className="font-body text-xs text-muted-foreground">Send a tiny sample to verify your API key.</p>
-                </div>
-                <button
-                  onClick={runTestPing}
-                  disabled={testLoading}
-                  className="border border-primary text-primary px-3 py-2 font-body text-[10px] uppercase tracking-widest disabled:opacity-50 hover:bg-rose-light/30 transition-colors"
-                >
-                  {testLoading ? "Testing..." : "Test"}
-                </button>
-              </div>
-              {testMessage && (
-                <p className="mt-3 font-body text-xs text-muted-foreground">{testMessage}</p>
-              )}
             </div>
 
             {/* ── Loading ── */}
             {loading && (
               <div className="flex flex-col items-center justify-center py-24 gap-6 animate-fade-in">
-                <div className="w-20 h-20 bg-rose-light flex items-center justify-center border border-border/40">
+                <div className="w-20 h-20 bg-rose-light rounded-2xl flex items-center justify-center border border-border/40">
                   <Loader2 className="h-8 w-8 text-primary animate-spin" />
                 </div>
-                <p className="font-display text-2xl text-foreground">Analysing your skin...</p>
-                <p className="font-body text-xs text-muted-foreground">Gemini is reviewing your selections</p>
+                <p className="font-display text-2xl text-foreground">Analyzing your skin...</p>
+                <p className="font-body text-xs text-muted-foreground">Preparing your personalized result</p>
               </div>
             )}
 
             {/* ── Error ── */}
             {error && !loading && (
-              <div className="border border-red-200 bg-red-50 p-8 text-center animate-fade-in">
+              <div className="border border-red-200 bg-red-50 rounded-2xl p-8 text-center animate-fade-in">
                 <p className="font-body text-sm text-red-600 mb-6">{error}</p>
-                <button onClick={reset} className="bg-primary text-primary-foreground px-8 py-3 font-body text-[10px] uppercase tracking-widest hover:bg-primary/90 transition-all">
+                <button onClick={reset} className="bg-primary rounded-xl text-primary-foreground px-8 py-3 font-body text-[10px] uppercase tracking-widest hover:bg-primary/90 transition-all">
                   Try Again
                 </button>
               </div>
@@ -240,50 +361,71 @@ const SkinAnalysis = () => {
             {/* ── Result ── */}
             {result && !loading && (
               <div className="animate-fade-in space-y-6">
-                <div className="flex items-center gap-3 justify-center mb-4">
+                <div className="flex items-center gap-3 justify-center border border-accent/30 bg-accent/5 rounded-2xl px-4 py-3">
                   <CheckCircle className="h-5 w-5 text-accent" />
                   <p className="font-body text-sm text-accent font-medium">Analysis Complete</p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div className={`border p-6 text-center ${skinTypeColor[result.skinType] ?? "bg-rose-50 border-rose-200 text-rose-700"}`}>
-                    <p className="font-body text-[9px] uppercase tracking-widest mb-2 opacity-70">Skin Type</p>
-                    <p className="font-display text-3xl">{result.skinType}</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className={`border rounded-2xl p-6 md:p-7 ${skinTypeColor[result.skinType] ?? "bg-rose-50 border-rose-200 text-rose-700"}`}>
+                    <p className="font-body text-[9px] uppercase tracking-widest mb-2 opacity-70">Your Skin Type</p>
+                    <p className="font-display text-3xl mb-1">{result.skinType}</p>
+                    <p className="font-body text-xs opacity-80">Use balancing, non-stripping products designed for this skin profile.</p>
                   </div>
-                  <div className="bg-sage-light/60 border border-green-200 text-green-700 p-6 text-center">
-                    <p className="font-body text-[9px] uppercase tracking-widest mb-2 opacity-70">Primary Concern</p>
-                    <p className="font-display text-3xl">{result.concern}</p>
+                  <div className="bg-sage-light/60 border border-green-200 rounded-2xl text-green-700 p-6 md:p-7">
+                    <p className="font-body text-[9px] uppercase tracking-widest mb-2 opacity-70">Likely Problem You May Face</p>
+                    <p className="font-display text-3xl mb-1">{result.concern}</p>
+                    <p className="font-body text-xs opacity-80">Focus on consistency before adding multiple active products.</p>
                   </div>
                 </div>
 
-                <div className="bg-card border border-border/50 p-8">
-                  <p className="font-body text-[10px] uppercase tracking-widest text-muted-foreground mb-3">AI Diagnosis</p>
+                <div className="ds-card p-8">
+                  <p className="font-body text-[10px] uppercase tracking-widest text-muted-foreground mb-3">Skin Assessment Summary</p>
                   <p className="font-body text-sm text-foreground leading-relaxed">{result.explanation}</p>
                 </div>
 
-                <div className="bg-rose-light/30 border border-border/50 p-8">
-                  <p className="font-body text-[10px] uppercase tracking-widest text-muted-foreground mb-3">Your Personalised Routine</p>
-                  <ul className="font-body text-sm text-foreground leading-relaxed space-y-2 list-disc list-inside">
-                    {result.routine
-                      .split(/\n+/)
-                      .map(line => line.trim())
-                      .filter(Boolean)
-                      .map(line => (
-                        <li key={line}>{line}</li>
-                      ))}
-                  </ul>
+                <div className="bg-rose-light/30 border border-border/50 rounded-2xl p-8">
+                  <p className="font-body text-[10px] uppercase tracking-widest text-muted-foreground mb-3">Routine You Should Follow (AM/PM)</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div className="bg-background/70 border border-border/50 rounded-xl p-4">
+                      <p className="font-body text-[10px] uppercase tracking-widest text-muted-foreground mb-2">Morning (AM)</p>
+                      <ul className="font-body text-sm text-foreground leading-relaxed space-y-2 list-disc list-inside">
+                        {routineSections?.morning.map((line) => (
+                          <li key={`am-${line}`}>{line}</li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="bg-background/70 border border-border/50 rounded-xl p-4">
+                      <p className="font-body text-[10px] uppercase tracking-widest text-muted-foreground mb-2">Evening (PM)</p>
+                      <ul className="font-body text-sm text-foreground leading-relaxed space-y-2 list-disc list-inside">
+                        {routineSections?.evening.map((line) => (
+                          <li key={`pm-${line}`}>{line}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                  {(routineSections?.extra.length ?? 0) > 0 && (
+                    <div className="mt-5 bg-background/70 border border-border/50 rounded-xl p-4">
+                      <p className="font-body text-[10px] uppercase tracking-widest text-muted-foreground mb-2">Extra Care</p>
+                      <ul className="font-body text-sm text-foreground leading-relaxed space-y-2 list-disc list-inside">
+                        {routineSections?.extra.map((line) => (
+                          <li key={`extra-${line}`}>{line}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 pt-2">
                   <button
                     onClick={saveProfile}
-                    className="flex-1 bg-primary text-primary-foreground py-4 font-body text-[11px] uppercase tracking-[0.2em] hover:bg-primary/90 transition-all"
+                    className="flex-1 bg-primary rounded-xl text-primary-foreground py-4 font-body text-[11px] uppercase tracking-[0.2em] hover:bg-primary/90 transition-all"
                   >
                     Save to My Profile
                   </button>
                   <Link
                     to="/products"
-                    className="flex-1 border border-primary/40 text-primary py-4 font-body text-[11px] uppercase tracking-[0.2em] hover:bg-rose-light transition-all text-center"
+                    className="flex-1 border border-primary/40 rounded-xl text-primary py-4 font-body text-[11px] uppercase tracking-[0.2em] hover:bg-rose-light transition-all text-center"
                   >
                     Shop Recommendations →
                   </Link>
@@ -297,7 +439,7 @@ const SkinAnalysis = () => {
 
             {/* ── Questionnaire ── */}
             {!loading && !result && !error && (
-              <div className="animate-fade-in">
+              <div className="animate-fade-in ds-card p-6 md:p-8">
                 <div className="mb-2 flex items-center justify-between">
                   <p className="font-body text-[10px] uppercase tracking-widest text-muted-foreground">
                     {isCustomStep ? "Add follow-up details" : `Question ${stepIndex + 1} of ${totalSteps}`}
@@ -313,7 +455,7 @@ const SkinAnalysis = () => {
                     <h2 className="font-display text-3xl md:text-4xl text-foreground mb-3">
                       {currentQ.question}
                     </h2>
-                    <p className="font-body text-xs text-muted-foreground mb-6">Select all that apply. You can pick multiple options.</p>
+                    <p className="font-body text-xs text-muted-foreground mb-6">Choose one option that describes your skin best.</p>
 
                     <div className="space-y-3 mb-10">
                       {currentQ.options.map((opt) => (
@@ -322,11 +464,11 @@ const SkinAnalysis = () => {
                           onClick={() => toggleAnswer(opt.value)}
                           className={`w-full flex items-center justify-between border px-6 py-4 text-left transition-all group ${
                             selectedAns.includes(opt.value)
-                              ? "bg-rose-light border-primary"
+                              ? "bg-rose-light border-primary shadow-[0_0_0_1px_rgba(0,0,0,0.03)]"
                               : "border-border/60 hover:border-primary/40 hover:bg-rose-light/20"
                           }`}
                         >
-                          <span className="font-body text-sm text-foreground">{opt.label}</span>
+                          <span className="font-body text-sm text-foreground pr-3">{opt.label}</span>
                           {selectedAns.includes(opt.value) && (
                             <CheckCircle className="h-4 w-4 text-primary shrink-0" />
                           )}
@@ -337,11 +479,11 @@ const SkinAnalysis = () => {
                 )}
 
                 {isCustomStep && (
-                  <div className="border border-border/60 bg-card p-5 mb-8">
+                  <div className="border border-border/60 rounded-2xl bg-card p-5 mb-8">
                     <div className="flex items-center justify-between mb-3">
                       <div>
                         <p className="font-body text-xs uppercase tracking-widest text-muted-foreground">Add your own question</p>
-                        <p className="font-body text-[11px] text-muted-foreground">Help Gemini with extra context (up to {maxCustom} custom questions).</p>
+                        <p className="font-body text-[11px] text-muted-foreground">Add extra context (up to {maxCustom} custom questions).</p>
                       </div>
                       <span className="font-body text-[11px] text-muted-foreground">{customQAs.length}/{maxCustom}</span>
                     </div>

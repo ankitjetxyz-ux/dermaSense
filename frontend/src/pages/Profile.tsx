@@ -60,16 +60,16 @@ const Profile = () => {
 
           {/* User hero */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-14 pb-12 border-b border-border/50">
-            <div className="w-20 h-20 bg-rose-light flex items-center justify-center border border-border/50 shrink-0">
+            <div className="w-20 h-20 bg-rose-light rounded-2xl flex items-center justify-center border border-border/50 shrink-0 shadow-sm">
               <UserIcon className="h-8 w-8 text-primary" />
             </div>
             <div>
-              <h1 className="font-display text-4xl italic text-foreground mb-1">My Profile</h1>
+              <h1 className="font-display text-4xl text-foreground mb-1">My Profile</h1>
               <p className="font-body text-xs text-muted-foreground uppercase tracking-widest">{user?.fullName ?? "Guest"} • Diagnostics Archive</p>
             </div>
             <Link
               to="/routine"
-              className="sm:ml-auto flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 font-body text-[10px] uppercase tracking-widest hover:bg-primary/90 transition-all"
+              className="sm:ml-auto flex items-center gap-2 bg-primary rounded-xl text-primary-foreground px-6 py-3 font-body text-[10px] uppercase tracking-widest hover:bg-primary/90 transition-all"
             >
               <Plus className="h-3.5 w-3.5" /> New Diagnostic
             </Link>
@@ -91,9 +91,9 @@ const Profile = () => {
             ) : profiles.length === 0 ? (
               <div className="border border-border/50 p-16 text-center bg-secondary/20">
                 <FlaskConical className="h-10 w-10 text-muted-foreground/30 mx-auto mb-6" />
-                <p className="font-display text-2xl italic text-muted-foreground mb-3">No diagnostics yet.</p>
+                <p className="font-display text-2xl text-muted-foreground mb-3">No diagnostics yet.</p>
                 <p className="font-body text-xs text-muted-foreground mb-8">Take our skin diagnostic to get a personalised routine recommendation.</p>
-                <Link to="/routine" className="bg-primary text-primary-foreground px-8 py-3 font-body text-[10px] uppercase tracking-widest hover:bg-primary/90 transition-all">
+                <Link to="/routine" className="bg-primary rounded-xl text-primary-foreground px-8 py-3 font-body text-[10px] uppercase tracking-widest hover:bg-primary/90 transition-all">
                   Start Diagnostic
                 </Link>
               </div>
@@ -102,7 +102,7 @@ const Profile = () => {
                 {profiles.map((p) => (
                   <div
                     key={p.id}
-                    className={`border p-7 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all hover:-translate-y-0.5 hover:shadow-sm ${concernColor[p.concern] ?? "bg-secondary/20 border-border/50"}`}
+                    className={`border rounded-2xl p-7 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all hover:-translate-y-0.5 hover:shadow-md ${concernColor[p.concern] ?? "bg-secondary/20 border-border/50"}`}
                   >
                     <div className="flex items-center gap-5">
                       <div className="w-10 h-10 bg-background/80 flex items-center justify-center border border-border/40 shrink-0">

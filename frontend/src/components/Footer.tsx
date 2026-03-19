@@ -1,21 +1,21 @@
 import { Link } from "react-router-dom";
 
 const Footer = () => (
-  <footer className="bg-secondary/30 border-t border-border/50">
+  <footer className="mt-16">
     {/* Newsletter strip */}
-    <div className="bg-rose-light/50 border-b border-border/50 py-12">
-      <div className="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+    <div className="py-10">
+      <div className="container mx-auto px-6 ds-card p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6">
         <div>
-          <h3 className="font-display text-2xl italic text-foreground mb-1">Join the Ritual</h3>
+          <h3 className="font-display text-3xl text-foreground mb-1">Join the Ritual</h3>
           <p className="font-body text-xs text-muted-foreground">Skincare routines, ingredient science and exclusive offers.</p>
         </div>
         <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
           <input
             type="email"
             placeholder="your@email.com"
-            className="font-body text-sm border border-border/60 bg-background px-5 py-3 outline-none focus:border-primary transition-colors w-full sm:w-64"
+            className="font-body text-sm border border-border/70 rounded-xl bg-background px-5 py-3 outline-none focus:border-primary transition-colors w-full sm:w-64"
           />
-          <button className="bg-primary text-primary-foreground px-8 py-3 font-body text-[10px] uppercase tracking-widest hover:bg-primary/90 transition-all whitespace-nowrap">
+          <button className="bg-primary rounded-xl text-primary-foreground px-8 py-3 font-body text-[10px] uppercase tracking-widest hover:bg-primary/90 transition-all whitespace-nowrap">
             Subscribe
           </button>
         </div>
@@ -23,9 +23,9 @@ const Footer = () => (
     </div>
 
     {/* Links */}
-    <div className="container mx-auto px-6 py-14 grid grid-cols-2 md:grid-cols-4 gap-10">
+    <div className="container mx-auto px-6 py-8 ds-grid-bg rounded-2xl border border-border/50 grid grid-cols-2 md:grid-cols-4 gap-10">
       <div className="col-span-2 md:col-span-1">
-        <Link to="/" className="font-display text-2xl italic text-foreground mb-4 block">DermaSense</Link>
+        <Link to="/" className="font-display text-3xl text-foreground mb-4 block">DermaSense</Link>
         <p className="font-body text-xs text-muted-foreground leading-relaxed max-w-[200px]">
           Advanced dermaceutical research meets personalised botanical skincare.
         </p>
@@ -57,7 +57,7 @@ const Footer = () => (
     </div>
 
     {/* Bottom bar */}
-    <div className="border-t border-border/40 py-6">
+    <div className="py-6">
       <div className="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
         <p className="font-body text-[9px] uppercase tracking-[0.3em] text-muted-foreground/60">© 2026 DermaSense. All rights reserved.</p>
         <div className="flex gap-8">

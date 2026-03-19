@@ -42,11 +42,11 @@ const Products = () => {
         {/* Header banner */}
         <div className="bg-rose-light/40 border-b border-border/50 py-14 text-center">
           <span className="font-body text-[10px] font-medium uppercase tracking-[0.3em] text-accent block mb-3">Collection</span>
-          <h1 className="font-display text-5xl md:text-7xl italic text-foreground">The Catalog</h1>
+          <h1 className="font-display text-5xl md:text-7xl text-foreground">The Catalog</h1>
         </div>
 
         {/* Filters bar */}
-        <div className="border-b border-border/50 bg-background sticky top-[65px] z-30">
+        <div className="border-b border-border/50 bg-background/80 backdrop-blur-md sticky top-[88px] z-30">
           <div className="container mx-auto px-6 py-4 flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-8 justify-between">
             {/* Categories */}
             <div className="flex items-center gap-6 overflow-x-auto no-scrollbar">
@@ -69,14 +69,14 @@ const Products = () => {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search..."
-                className="font-body text-[11px] border-b border-border bg-transparent outline-none py-1 w-36 focus:border-primary text-foreground placeholder:text-muted-foreground/60 transition-colors"
+                className="font-body text-[11px] border border-border/70 rounded-full bg-background px-3 py-1.5 w-40 focus:border-primary text-foreground placeholder:text-muted-foreground/60 transition-colors"
               />
               <div className="flex items-center gap-2">
                 <Filter className="h-3.5 w-3.5 text-muted-foreground" />
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as any)}
-                  className="font-body text-[11px] bg-transparent text-muted-foreground outline-none cursor-pointer"
+                  className="font-body text-[11px] bg-transparent text-muted-foreground outline-none cursor-pointer border border-border/60 rounded-full px-3 py-1"
                 >
                   <option value="default">Sort</option>
                   <option value="low">Price: Low → High</option>
@@ -99,7 +99,7 @@ const Products = () => {
                 <Link
                   to={`/product/${product.id}`}
                   key={product.id}
-                  className="group bg-card border border-border/50 flex flex-col overflow-hidden hover:shadow-md hover:-translate-y-1 transition-all duration-300"
+                  className="group ds-card flex flex-col overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
                 >
                   <div className="relative aspect-[4/5] overflow-hidden bg-secondary/40">
                     <img
@@ -116,7 +116,7 @@ const Products = () => {
 
                   <div className="p-5 flex flex-col flex-1">
                     <p className="font-body text-[9px] uppercase tracking-widest text-muted-foreground mb-1">{product.category}</p>
-                    <h3 className="font-display text-xl italic text-foreground mb-2">{product.name}</h3>
+                    <h3 className="font-display text-xl text-foreground mb-2">{product.name}</h3>
                     <p className="font-body text-xs text-muted-foreground leading-relaxed flex-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       {product.description}
                     </p>
@@ -130,7 +130,7 @@ const Products = () => {
                               window.dispatchEvent(new Event("cart-updated"));
                               window.setTimeout(() => setAddedId(null), 900);
                             }}
-                        className="flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 font-body text-[10px] uppercase tracking-widest hover:bg-primary/90 transition-all"
+                        className="flex items-center gap-2 bg-primary rounded-lg text-primary-foreground px-4 py-2 font-body text-[10px] uppercase tracking-widest hover:bg-primary/90 transition-all"
                       >
                             <ShoppingBag className="h-3 w-3" />
                             {addedId === product.id ? "Added" : "Add"}

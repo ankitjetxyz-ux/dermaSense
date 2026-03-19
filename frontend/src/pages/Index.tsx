@@ -31,7 +31,7 @@ const Index = () => (
           <div className="flex flex-col md:flex-row items-center gap-16">
             {/* Copy */}
             <div className="flex-1 max-w-lg animate-fade-in">
-              <span className="inline-block font-body text-[10px] font-medium uppercase tracking-[0.35em] text-accent mb-6 bg-sage-light px-3 py-1">
+              <span className="inline-block font-body text-[10px] font-semibold uppercase tracking-[0.35em] text-accent mb-6 bg-sage-light px-3 py-1 rounded-full">
                 Science-Led Skincare
               </span>
               <h1 className="font-display text-6xl md:text-8xl leading-[0.9] text-foreground mb-8">
@@ -43,10 +43,10 @@ const Index = () => (
                 Advanced diagnostics and botanically-backed formulations curated to your skin's unique biology.
               </p>
               <div className="mt-10 flex flex-col sm:flex-row gap-4">
-                <Link to="/skin-analysis" className="bg-primary text-primary-foreground px-10 py-4 font-body text-[11px] font-medium uppercase tracking-widest hover:bg-primary/90 transition-all text-center">
+                <Link to="/skin-analysis" className="bg-primary rounded-xl text-primary-foreground px-10 py-4 font-body text-[11px] font-medium uppercase tracking-widest hover:bg-primary/90 transition-all text-center">
                   Start Skin Analysis
                 </Link>
-                <Link to="/products" className="border border-primary/40 text-primary px-10 py-4 font-body text-[11px] font-medium uppercase tracking-widest hover:bg-rose-light transition-all text-center">
+                <Link to="/products" className="border border-primary/40 rounded-xl text-primary px-10 py-4 font-body text-[11px] font-medium uppercase tracking-widest hover:bg-rose-light transition-all text-center">
                   Explore Catalog
                 </Link>
               </div>
@@ -54,16 +54,16 @@ const Index = () => (
 
             {/* Hero image */}
             <div className="flex-1 w-full max-w-md animate-fade-in animate-delay-100">
-              <div className="relative aspect-[4/5] overflow-hidden">
+              <div className="relative aspect-[4/5] overflow-hidden rounded-3xl border border-border/50 shadow-lg">
                 <img
                   src="https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&w=1000&q=80"
                   alt="Skincare ritual"
                   className="w-full h-full object-cover"
                 />
                 {/* Overlay badge */}
-                <div className="absolute bottom-6 left-6 bg-background/90 backdrop-blur-sm p-4 border border-border/50">
+                <div className="absolute bottom-6 left-6 ds-glass rounded-xl p-4">
                   <p className="font-body text-[10px] uppercase tracking-widest text-muted-foreground">Personalised for</p>
-                  <p className="font-display text-xl italic text-foreground">Your Skin Type</p>
+                  <p className="font-display text-xl text-foreground">Your Skin Type</p>
                 </div>
               </div>
             </div>
@@ -75,17 +75,17 @@ const Index = () => (
       <section className="border-b border-border/50 py-16">
         <div className="container mx-auto px-6">
           <h2 className="font-display text-3xl text-foreground mb-10">Featured Collections</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             {featuredCategories.map((cat) => (
               <Link
                 key={cat.name}
                 to={`/products?category=${cat.name}`}
-                className="group relative aspect-[4/3] overflow-hidden"
+                className="group relative aspect-[4/3] overflow-hidden rounded-2xl border border-border/50 shadow-md"
               >
                 <img src={cat.img} alt={cat.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-foreground/20 group-hover:bg-foreground/30 transition-all" />
                 <div className="absolute bottom-0 left-0 p-6">
-                  <h3 className="font-display text-2xl italic text-white">{cat.name}</h3>
+                  <h3 className="font-display text-2xl text-white">{cat.name}</h3>
                   <p className="font-body text-[10px] uppercase tracking-widest text-white/70">{cat.desc}</p>
                 </div>
               </Link>

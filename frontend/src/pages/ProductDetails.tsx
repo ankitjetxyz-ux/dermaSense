@@ -16,7 +16,7 @@ const ProductDetails = () => {
       <div className="min-h-screen bg-background flex flex-col">
         <Navbar />
         <main className="flex-1 flex items-center justify-center flex-col gap-6 px-6">
-          <p className="font-display text-3xl italic text-muted-foreground">Product not found.</p>
+          <p className="font-display text-3xl text-muted-foreground">Product not found.</p>
           <Link to="/products" className="font-body text-[11px] uppercase tracking-widest text-primary underline underline-offset-4">← Back to Catalog</Link>
         </main>
       </div>
@@ -36,15 +36,15 @@ const ProductDetails = () => {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
             {/* Image */}
-            <div className="aspect-square overflow-hidden bg-secondary/40 border border-border/40">
+            <div className="aspect-square overflow-hidden bg-secondary/40 border border-border/40 rounded-3xl shadow-lg">
               <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
             </div>
 
             {/* Info */}
             <div className="flex flex-col h-full">
               <p className="font-body text-[10px] font-medium uppercase tracking-[0.3em] text-accent mb-3">{product.category}</p>
-              <h1 className="font-display text-5xl italic text-foreground mb-5">{product.name}</h1>
-              <p className="font-display text-3xl italic text-primary mb-8">${product.price}.00</p>
+              <h1 className="font-display text-5xl text-foreground mb-5">{product.name}</h1>
+              <p className="font-display text-3xl text-primary mb-8">${product.price}.00</p>
 
               <p className="font-body text-sm text-muted-foreground leading-relaxed mb-8">{product.description}</p>
 
@@ -79,7 +79,7 @@ const ProductDetails = () => {
                   setAdded(true);
                   window.setTimeout(() => setAdded(false), 1000);
                 }}
-                className="w-full flex items-center justify-center gap-3 bg-primary text-primary-foreground py-5 font-body text-[11px] font-medium uppercase tracking-[0.2em] hover:bg-primary/90 transition-all"
+                className="w-full flex items-center justify-center gap-3 bg-primary rounded-xl text-primary-foreground py-5 font-body text-[11px] font-medium uppercase tracking-[0.2em] hover:bg-primary/90 transition-all"
               >
                 <ShoppingBag className="h-4 w-4" /> {added ? "Added to Bag" : "Add to Bag"}
               </button>

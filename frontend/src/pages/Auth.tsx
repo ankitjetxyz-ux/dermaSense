@@ -45,14 +45,14 @@ const Auth = () => {
         <div className="w-full max-w-md animate-fade-in">
 
           {/* Card */}
-          <div className="border border-border/50 bg-card p-10 md:p-14 shadow-sm">
+          <div className="ds-card p-10 md:p-14">
             {/* Icon */}
-            <div className="w-14 h-14 bg-rose-light flex items-center justify-center mb-8 mx-auto">
+            <div className="w-14 h-14 bg-rose-light rounded-2xl flex items-center justify-center mb-8 mx-auto">
               <Sparkles className="h-6 w-6 text-primary" />
             </div>
 
             <div className="text-center mb-10">
-              <h1 className="font-display text-4xl italic text-foreground mb-2">Welcome</h1>
+              <h1 className="font-display text-4xl text-foreground mb-2">Welcome</h1>
               <p className="font-body text-xs text-muted-foreground">Sign up to save your skin profile and personalised routine.</p>
             </div>
 
@@ -85,7 +85,7 @@ const Auth = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-primary text-primary-foreground py-4 font-body text-[11px] uppercase tracking-[0.2em] disabled:opacity-60 hover:bg-primary/90 transition-all"
+                className="w-full bg-primary rounded-xl text-primary-foreground py-4 font-body text-[11px] uppercase tracking-[0.2em] disabled:opacity-60 hover:bg-primary/90 transition-all"
               >
                 {loading ? "Saving..." : "Create Account"}
               </button>

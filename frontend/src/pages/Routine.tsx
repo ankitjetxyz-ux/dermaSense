@@ -61,7 +61,7 @@ const Routine = () => {
             {/* Header */}
             <div className="text-center mb-12">
               <span className="font-body text-[10px] uppercase tracking-[0.3em] text-accent font-medium block mb-4">Personalised Diagnostics</span>
-              <h1 className="font-display text-5xl md:text-6xl italic text-foreground mb-2">Routine Finder</h1>
+              <h1 className="font-display text-5xl md:text-6xl text-foreground mb-2">Routine Finder</h1>
               <p className="font-body text-sm text-muted-foreground">Tell us about your skin so we can build your perfect routine.</p>
             </div>
 
@@ -75,7 +75,7 @@ const Routine = () => {
 
             {/* Step: Skin Type */}
             {step === "skin_type" && (
-              <div className="space-y-4">
+              <div className="space-y-4 ds-card p-5 md:p-6">
                 <p className="font-body text-xs uppercase tracking-widest text-muted-foreground mb-6">Step 1 of 2 — What is your skin type?</p>
                 {skinTypeOptions.map(({ value, desc }) => (
                   <button
@@ -83,7 +83,7 @@ const Routine = () => {
                     onClick={() => setSkinType(value)}
                     className={`w-full flex items-center justify-between border px-6 py-4 text-left transition-all ${
                       skinType === value
-                        ? "bg-rose-light border-primary text-foreground"
+                        ? "bg-rose-light border-primary text-foreground rounded-xl"
                         : "border-border/60 hover:border-primary/50 hover:bg-rose-light/30 text-foreground"
                     }`}
                   >
@@ -108,14 +108,14 @@ const Routine = () => {
 
             {/* Step: Concern */}
             {step === "concern" && (
-              <div>
+              <div className="ds-card p-5 md:p-6">
                 <p className="font-body text-xs uppercase tracking-widest text-muted-foreground mb-6">Step 2 of 2 — What is your primary concern?</p>
                 <div className="grid grid-cols-2 gap-3 mb-8">
                   {concernOptions.map(({ value, emoji }) => (
                     <button
                       key={value}
                       onClick={() => setConcern(value)}
-                      className={`flex items-center gap-3 border px-5 py-4 transition-all ${
+                      className={`flex items-center gap-3 border rounded-xl px-5 py-4 transition-all ${
                         concern === value
                           ? "bg-rose-light border-primary"
                           : "border-border/60 hover:border-primary/50 hover:bg-rose-light/30"
@@ -146,16 +146,16 @@ const Routine = () => {
 
             {/* Step: Confirm */}
             {step === "confirm" && (
-              <div className="border border-border/60 p-10 bg-card text-center space-y-6">
+              <div className="ds-card p-10 text-center space-y-6">
                 <p className="font-body text-xs uppercase tracking-widest text-muted-foreground">Your Skin Profile</p>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-rose-light/50 p-5">
                     <p className="font-body text-[10px] uppercase tracking-widest text-muted-foreground mb-2">Skin Type</p>
-                    <p className="font-display text-2xl italic text-foreground">{skinType}</p>
+                    <p className="font-display text-2xl text-foreground">{skinType}</p>
                   </div>
                   <div className="bg-sage-light/50 p-5">
                     <p className="font-body text-[10px] uppercase tracking-widest text-muted-foreground mb-2">Main Concern</p>
-                    <p className="font-display text-2xl italic text-foreground">{concern}</p>
+                    <p className="font-display text-2xl text-foreground">{concern}</p>
                   </div>
                 </div>
                 <p className="font-body text-sm text-muted-foreground">We'll save this to build your personalised routine recommendations.</p>
@@ -166,7 +166,7 @@ const Routine = () => {
                   <button
                     onClick={handleSubmit}
                     disabled={loading}
-                    className="bg-primary text-primary-foreground px-12 py-4 font-body text-[11px] uppercase tracking-widest disabled:opacity-60 hover:bg-primary/90 transition-all"
+                    className="bg-primary rounded-xl text-primary-foreground px-12 py-4 font-body text-[11px] uppercase tracking-widest disabled:opacity-60 hover:bg-primary/90 transition-all"
                   >
                     {loading ? "Saving..." : "Save My Routine"}
                   </button>
