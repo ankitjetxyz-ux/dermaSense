@@ -3,32 +3,40 @@ import Footer from "@/components/Footer";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Sparkles } from "lucide-react";
-import { getCurrentUser, getNextLocalId, setCurrentUser } from "@/lib/session";
+import { api } from "@/lib/api";
+import { setCurrentUser } from "@/lib/session";
+
+interface LoginUser {
+  id: number;
+  fullName: string;
+  email: string;
+}
 
 const Login = () => {
   const [email, setEmail] = useState("");
-  const [fullName, setFullName] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
     setLoading(true);
 
-    const existing = getCurrentUser();
-    const isSameEmail = existing && existing.email.toLowerCase() === email.toLowerCase();
-
-    const nextUser = isSameEmail
-      ? existing!
-      : {
-          id: getNextLocalId("user"),
-          fullName: fullName || existing?.fullName || "Dermasense Member",
-          email,
-        };
-
-    setCurrentUser(nextUser);
-    setLoading(false);
-    navigate("/profile");
+    try {
+      const user = await api.post<LoginUser, { email: string; password: string }>("/auth/login", { email, password });
+      setCurrentUser(user);
+      navigate("/profile");
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Login failed. Please try again.");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -46,7 +54,7 @@ const Login = () => {
             <div className="text-center mb-10">
               <h1 className="font-display text-4xl text-foreground mb-2">Login</h1>
               <p className="font-body text-xs text-muted-foreground">
-                Sign in to view your profile and saved routines. No password needed.
+                Sign in to view your profile and saved routines.
               </p>
             </div>
 
@@ -63,19 +71,22 @@ const Login = () => {
                 />
               </div>
               <div>
-                <label className="font-body text-[10px] uppercase tracking-widest text-muted-foreground block mb-2">Name (optional)</label>
+                <label className="font-body text-[10px] uppercase tracking-widest text-muted-foreground block mb-2">Password</label>
                 <input
-                  type="text"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  placeholder="Jane Doe"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Your password"
+                  required
                   className="w-full border-b border-border bg-transparent outline-none py-2 font-body text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-primary transition-colors"
                 />
               </div>
 
+              {error && <p className="font-body text-xs text-red-500">{error}</p>}
+
               <button
                 type="submit"
-                disabled={loading || !email}
+                disabled={loading || !email || !password}
                 className="w-full bg-primary rounded-xl text-primary-foreground py-4 font-body text-[11px] uppercase tracking-[0.2em] disabled:opacity-60 hover:bg-primary/90 transition-all"
               >
                 {loading ? "Signing in..." : "Sign In"}

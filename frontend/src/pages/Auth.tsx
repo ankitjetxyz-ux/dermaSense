@@ -4,17 +4,22 @@ import { useState } from "react";
 import { api } from "@/lib/api";
 import { Link, useNavigate } from "react-router-dom";
 import { Sparkles } from "lucide-react";
-import { getNextLocalId, setCurrentUser } from "@/lib/session";
+import { setCurrentUser } from "@/lib/session";
 
 interface CreatedUser {
   id: number;
   fullName: string;
   email: string;
+  age?: number | null;
+  gender?: string | null;
 }
 
 const Auth = () => {
   const [email, setEmail]       = useState("");
   const [fullName, setFullName] = useState("");
+  const [password, setPassword] = useState("");
+  const [age, setAge]           = useState("");
+  const [gender, setGender]     = useState("");
   const [loading, setLoading]   = useState(false);
   const [error, setError]       = useState("");
   const navigate = useNavigate();
@@ -24,17 +29,24 @@ const Auth = () => {
     setError("");
     setLoading(true);
     try {
-      const created = await api.post<CreatedUser, { email: string; fullName: string }>("/users", { email, fullName });
+      const created = await api.post<CreatedUser, { email: string; fullName: string; password: string; age?: number; gender?: string }>("/auth/register", {
+        email,
+        fullName,
+        password,
+        ...(age ? { age: Number(age) } : {}),
+        ...(gender ? { gender } : {}),
+      });
       setCurrentUser({ id: created.id, email: created.email, fullName: created.fullName });
       navigate("/profile");
     } catch (err) {
-      const localId = getNextLocalId("user");
-      setCurrentUser({ id: localId, fullName, email });
-      setError("Backend unavailable. You are in local mode and your profile is saved on this device.");
-      console.error(err);
-      navigate("/profile");
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Registration failed. Please try again.");
+      }
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
@@ -79,12 +91,46 @@ const Auth = () => {
                   className="w-full border-b border-border bg-transparent outline-none py-2 font-body text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-primary transition-colors"
                 />
               </div>
+              <div>
+                <label className="font-body text-[10px] uppercase tracking-widest text-muted-foreground block mb-2">Password</label>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="At least 6 characters"
+                  minLength={6}
+                  required
+                  className="w-full border-b border-border bg-transparent outline-none py-2 font-body text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-primary transition-colors"
+                />
+              </div>
+              <div>
+                <label className="font-body text-[10px] uppercase tracking-widest text-muted-foreground block mb-2">Age (optional)</label>
+                <input
+                  type="number"
+                  value={age}
+                  onChange={(e) => setAge(e.target.value)}
+                  placeholder="25"
+                  min={1}
+                  max={120}
+                  className="w-full border-b border-border bg-transparent outline-none py-2 font-body text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-primary transition-colors"
+                />
+              </div>
+              <div>
+                <label className="font-body text-[10px] uppercase tracking-widest text-muted-foreground block mb-2">Gender (optional)</label>
+                <input
+                  type="text"
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}
+                  placeholder="Female, Male, Non-binary, Prefer not to say"
+                  className="w-full border-b border-border bg-transparent outline-none py-2 font-body text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-primary transition-colors"
+                />
+              </div>
 
               {error && <p className="font-body text-xs text-red-500">{error}</p>}
 
               <button
                 type="submit"
-                disabled={loading}
+                disabled={loading || !fullName || !email || !password}
                 className="w-full bg-primary rounded-xl text-primary-foreground py-4 font-body text-[11px] uppercase tracking-[0.2em] disabled:opacity-60 hover:bg-primary/90 transition-all"
               >
                 {loading ? "Saving..." : "Create Account"}

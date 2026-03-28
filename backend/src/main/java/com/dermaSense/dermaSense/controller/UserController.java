@@ -36,11 +36,17 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody CreateUserRequest request) {
-        User user = new User(request.fullName(), request.email());
+        String resolvedName = request.fullName() != null && !request.fullName().isBlank()
+                ? request.fullName().trim()
+                : (request.name() == null ? "" : request.name().trim());
+        User user = new User(resolvedName, request.email());
+        user.setPassword(request.password());
+        user.setAge(request.age());
+        user.setGender(request.gender());
         User saved = userRepository.save(user);
         return ResponseEntity.created(URI.create("/api/users/" + saved.getId())).body(saved);
     }
 
-    public record CreateUserRequest(String fullName, String email) {
+    public record CreateUserRequest(String fullName, String name, String email, String password, Integer age, String gender) {
     }
 }

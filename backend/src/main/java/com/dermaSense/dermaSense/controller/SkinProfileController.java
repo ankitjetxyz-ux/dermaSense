@@ -51,10 +51,18 @@ public class SkinProfileController {
         }
 
         SkinProfile skinProfile = new SkinProfile(request.skinType(), request.concern(), user);
+        skinProfile.setSensitivityLevel(request.sensitivityLevel());
+        skinProfile.setAcneProne(request.acneProne());
         SkinProfile saved = skinProfileRepository.save(skinProfile);
         return ResponseEntity.created(URI.create("/api/skin-profiles/" + saved.getId())).body(saved);
     }
 
-    public record CreateSkinProfileRequest(String skinType, String concern, Long userId) {
+    public record CreateSkinProfileRequest(
+            String skinType,
+            String concern,
+            Long userId,
+            Integer sensitivityLevel,
+            Boolean acneProne
+    ) {
     }
 }
