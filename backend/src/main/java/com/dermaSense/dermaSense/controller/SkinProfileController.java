@@ -32,14 +32,14 @@ public class SkinProfileController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SkinProfile> getSkinProfileById(@PathVariable Long id) {
+    public ResponseEntity<SkinProfile> getSkinProfileById(@PathVariable("id") Long id) {
         return skinProfileRepository.findById(id)
-                .map(ResponseEntity::ok)
+                .map(profile -> ResponseEntity.ok(profile))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/user/{userId}")
-    public List<SkinProfile> getSkinProfilesByUser(@PathVariable Long userId) {
+    public List<SkinProfile> getSkinProfilesByUser(@PathVariable("userId") Long userId) {
         return skinProfileRepository.findByUserId(userId);
     }
 
